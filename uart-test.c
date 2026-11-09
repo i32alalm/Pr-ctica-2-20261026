@@ -7,7 +7,7 @@
 
 /* UART usada por el programa y sus baudios */
 #define UART_ID   UART1
-#define UART_BAUD 9600u
+#define UART_BAUD 115200u
 
 static void delay(void)
 {
