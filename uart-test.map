@@ -4,12 +4,50 @@ Discarded input sections
  .text          0x00000000        0x0 startup.o
  .data          0x00000000        0x0 startup.o
  .bss           0x00000000        0x0 startup.o
+ .group         0x00000000        0xc uart.o
+ .group         0x00000000        0xc uart.o
+ .group         0x00000000        0xc uart.o
+ .group         0x00000000        0xc uart.o
+ .text          0x00000000        0x0 uart.o
+ .data          0x00000000        0x0 uart.o
+ .bss           0x00000000        0x0 uart.o
+ .text.uart_rx_ready
+                0x00000000       0x18 uart.o
+ .text.uart_getc
+                0x00000000       0x30 uart.o
+ .comment       0x00000000       0x27 uart.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
+ .group         0x00000000        0xc uart-test.o
  .group         0x00000000        0xc uart-test.o
  .group         0x00000000        0xc uart-test.o
  .group         0x00000000        0xc uart-test.o
  .text          0x00000000        0x0 uart-test.o
  .data          0x00000000        0x0 uart-test.o
  .bss           0x00000000        0x0 uart-test.o
+ .debug_macro   0x00000000      0xaa8 uart-test.o
+ .debug_macro   0x00000000      0x34e uart-test.o
+ .debug_macro   0x00000000       0x8e uart-test.o
+ .debug_macro   0x00000000       0x10 uart-test.o
  .comment       0x00000000       0x27 uart-test.o
 
 Memory Configuration
@@ -22,6 +60,7 @@ RAM              0x40000000         0x00008000         xrw
 Linker script and memory map
 
 LOAD startup.o
+LOAD uart.o
 LOAD uart-test.o
                 0x00000800                        STACK_SYS_SIZE = 0x800
                 0x00000100                        STACK_SVC_SIZE = 0x100
@@ -35,69 +74,84 @@ LOAD uart-test.o
  .vectors       0x00000000       0x20 startup.o
                 0x00000000                _start
 
-.text           0x00000020      0x47c
+.text           0x00000020      0x58c
                 0x00000020                        . = ALIGN (0x4)
  *(.text*)
  .text.Reset_Handler
                 0x00000020       0xf8 startup.o
                 0x00000020                Reset_Handler
- .text.delay    0x00000118       0x3c uart-test.o
- .text.uart1_putc
-                0x00000154       0x20 uart-test.o
- .text.uart1_puts
-                0x00000174       0x28 uart-test.o
- .text.uart1_print_u8
-                0x0000019c       0xf0 uart-test.o
+ .text.udiv     0x00000118       0x30 uart.o
+ .text.set2     0x00000148       0x1c uart.o
+ .text.uart_init
+                0x00000164      0x154 uart.o
+                0x00000164                uart_init
+ .text.uart_config
+                0x000002b8       0x88 uart.o
+                0x000002b8                uart_config
+ .text.uart_putc
+                0x00000340       0x20 uart.o
+                0x00000340                uart_putc
+ .text.uart_puts
+                0x00000360       0x30 uart.o
+                0x00000360                uart_puts
+ .text.uart_print_u8
+                0x00000390       0xf0 uart.o
+                0x00000390                uart_print_u8
+ .text.delay    0x00000480       0x3c uart-test.o
  .text.irq_handler_c
-                0x0000028c        0x4 uart-test.o
-                0x0000028c                irq_handler_c
+                0x000004bc        0x4 uart-test.o
+                0x000004bc                irq_handler_c
  .text.fiq_handler_c
-                0x00000290        0x4 uart-test.o
-                0x00000290                fiq_handler_c
- .text.main     0x00000294      0x1f8 uart-test.o
-                0x00000294                main
+                0x000004c0        0x4 uart-test.o
+                0x000004c0                fiq_handler_c
+ .text.main     0x000004c4       0xcc uart-test.o
+                0x000004c4                main
  *(.rodata*)
+ .rodata.uart_init
+                0x00000590        0x4 uart.o
+ .rodata.uart_base
+                0x00000594       0x10 uart.o
  .rodata.main.str1.4
-                0x0000048c        0xf uart-test.o
+                0x000005a4        0x7 uart-test.o
  *(.glue_7)
- .glue_7        0x0000049b        0x0 linker stubs
+ .glue_7        0x000005ab        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x0000049b        0x0 linker stubs
-                0x0000049c                        . = ALIGN (0x4)
- *fill*         0x0000049b        0x1 
+ .glue_7t       0x000005ab        0x0 linker stubs
+                0x000005ac                        . = ALIGN (0x4)
+ *fill*         0x000005ab        0x1 
 
-.vfp11_veneer   0x0000049c        0x0
- .vfp11_veneer  0x0000049c        0x0 linker stubs
+.vfp11_veneer   0x000005ac        0x0
+ .vfp11_veneer  0x000005ac        0x0 linker stubs
 
-.v4_bx          0x0000049c        0x0
- .v4_bx         0x0000049c        0x0 linker stubs
+.v4_bx          0x000005ac        0x0
+ .v4_bx         0x000005ac        0x0 linker stubs
 
-.iplt           0x0000049c        0x0
- .iplt          0x0000049c        0x0 startup.o
+.iplt           0x000005ac        0x0
+ .iplt          0x000005ac        0x0 startup.o
 
-.rel.dyn        0x0000049c        0x0
- .rel.iplt      0x0000049c        0x0 startup.o
+.rel.dyn        0x000005ac        0x0
+ .rel.iplt      0x000005ac        0x0 startup.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM.exidx      0x0000049c        0x0
-                0x0000049c                        __exidx_start = .
+.ARM.exidx      0x000005ac        0x0
+                0x000005ac                        __exidx_start = .
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x0000049c                        __exidx_end = .
+                0x000005ac                        __exidx_end = .
 
-.data           0x40000000        0x0 load address 0x0000049c
+.data           0x40000000        0x0 load address 0x000005ac
                 0x40000000                        . = ALIGN (0x4)
                 0x40000000                        _sdata = .
  *(.data*)
                 0x40000000                        . = ALIGN (0x4)
                 0x40000000                        _edata = .
-                0x0000049c                        _sidata = LOADADDR (.data)
+                0x000005ac                        _sidata = LOADADDR (.data)
 
-.igot.plt       0x40000000        0x0 load address 0x0000049c
+.igot.plt       0x40000000        0x0 load address 0x000005ac
  .igot.plt      0x40000000        0x0 startup.o
 
-.bss            0x40000000        0x0 load address 0x0000049c
+.bss            0x40000000        0x0 load address 0x000005ac
                 0x40000000                        . = ALIGN (0x4)
                 0x40000000                        _sbss = .
  *(.bss*)
@@ -139,54 +193,91 @@ LOAD linker stubs
  .ARM.attributes
                 0x00000000       0x20 startup.o
  .ARM.attributes
-                0x00000020       0x2a uart-test.o
+                0x00000020       0x2a uart.o
+ .ARM.attributes
+                0x0000004a       0x2a uart-test.o
 
-.debug_line     0x00000000      0x489
+.debug_line     0x00000000      0x6c3
  .debug_line    0x00000000       0xaf startup.o
- .debug_line    0x000000af      0x3da uart-test.o
+ .debug_line    0x000000af      0x39e uart.o
+ .debug_line    0x0000044d      0x276 uart-test.o
 
 .debug_line_str
-                0x00000000       0x3f
+                0x00000000       0x2f
  .debug_line_str
-                0x00000000       0x3f startup.o
+                0x00000000       0x2f startup.o
 
-.debug_info     0x00000000      0x253
+.debug_info     0x00000000      0x78e
  .debug_info    0x00000000       0x31 startup.o
- .debug_info    0x00000031      0x222 uart-test.o
+ .debug_info    0x00000031      0x554 uart.o
+ .debug_info    0x00000585      0x209 uart-test.o
 
-.debug_abbrev   0x00000000      0x174
+.debug_abbrev   0x00000000      0x2d9
  .debug_abbrev  0x00000000       0x26 startup.o
- .debug_abbrev  0x00000026      0x14e uart-test.o
+ .debug_abbrev  0x00000026      0x184 uart.o
+ .debug_abbrev  0x000001aa      0x12f uart-test.o
 
-.debug_aranges  0x00000000       0x78
+.debug_aranges  0x00000000       0xc0
  .debug_aranges
                 0x00000000       0x28 startup.o
  .debug_aranges
-                0x00000028       0x50 uart-test.o
+                0x00000028       0x60 uart.o
+ .debug_aranges
+                0x00000088       0x38 uart-test.o
 
-.debug_str      0x00000000     0x3af2
- .debug_str     0x00000000     0x3af2 startup.o
-                                 0x5c (size before relaxing)
- .debug_str     0x00003af2        0x0 uart-test.o
-                               0x3bfe (size before relaxing)
+.debug_str      0x00000000     0x710f
+ .debug_str     0x00000000     0x710f startup.o
+                                 0x4c (size before relaxing)
+ .debug_str     0x0000710f        0x0 uart.o
+                               0x3dcc (size before relaxing)
+ .debug_str     0x0000710f        0x0 uart-test.o
+                               0x7129 (size before relaxing)
 
 .debug_rnglists
-                0x00000000       0x53
+                0x00000000       0x92
  .debug_rnglists
                 0x00000000       0x1a startup.o
  .debug_rnglists
-                0x0000001a       0x39 uart-test.o
+                0x0000001a       0x52 uart.o
+ .debug_rnglists
+                0x0000006c       0x26 uart-test.o
 
 .debug_loclists
-                0x00000000      0x137
+                0x00000000      0x2d4
  .debug_loclists
-                0x00000000      0x137 uart-test.o
+                0x00000000      0x2a3 uart.o
+ .debug_loclists
+                0x000002a3       0x31 uart-test.o
 
-.debug_macro    0x00000000      0xea7
- .debug_macro   0x00000000       0x2f uart-test.o
- .debug_macro   0x0000002f      0xaa8 uart-test.o
- .debug_macro   0x00000ad7      0x34e uart-test.o
- .debug_macro   0x00000e25       0x82 uart-test.o
+.debug_macro    0x00000000     0x1b5c
+ .debug_macro   0x00000000       0x74 uart.o
+ .debug_macro   0x00000074      0xaa8 uart.o
+ .debug_macro   0x00000b1c      0x34e uart.o
+ .debug_macro   0x00000e6a       0x8e uart.o
+ .debug_macro   0x00000ef8       0x10 uart.o
+ .debug_macro   0x00000f08      0x127 uart-test.o
+ .debug_macro   0x0000102f       0x22 uart-test.o
+ .debug_macro   0x00001051       0x60 uart-test.o
+ .debug_macro   0x000010b1       0x24 uart-test.o
+ .debug_macro   0x000010d5       0x5c uart-test.o
+ .debug_macro   0x00001131       0x3c uart-test.o
+ .debug_macro   0x0000116d       0x34 uart-test.o
+ .debug_macro   0x000011a1       0x16 uart-test.o
+ .debug_macro   0x000011b7       0x57 uart-test.o
+ .debug_macro   0x0000120e       0x9e uart-test.o
+ .debug_macro   0x000012ac      0x364 uart-test.o
+ .debug_macro   0x00001610      0x112 uart-test.o
+ .debug_macro   0x00001722       0x10 uart-test.o
+ .debug_macro   0x00001732       0x16 uart-test.o
+ .debug_macro   0x00001748       0x4a uart-test.o
+ .debug_macro   0x00001792       0x34 uart-test.o
+ .debug_macro   0x000017c6       0x10 uart-test.o
+ .debug_macro   0x000017d6       0x52 uart-test.o
+ .debug_macro   0x00001828      0x1de uart-test.o
+ .debug_macro   0x00001a06       0x16 uart-test.o
+ .debug_macro   0x00001a1c       0x16 uart-test.o
+ .debug_macro   0x00001a32      0x12a uart-test.o
 
-.debug_frame    0x00000000       0xb0
- .debug_frame   0x00000000       0xb0 uart-test.o
+.debug_frame    0x00000000      0x154
+ .debug_frame   0x00000000       0xf0 uart.o
+ .debug_frame   0x000000f0       0x64 uart-test.o

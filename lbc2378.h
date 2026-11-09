@@ -25,6 +25,10 @@
 
 
 #define PCLKSEL0 (*(volatile uint32_t*) 0xE01FC1A8u)
+#define PCLKSEL1 (*(volatile uint32_t*) 0xE01FC1ACu)
+
+// Power Control for Peripherals (UART2/3 apagadas tras reset)
+#define PCONP    (*(volatile uint32_t*) 0xE01FC0C4u)
 
 
 #define U1LCR (*(volatile uint8_t*) 0xE001000Cu)

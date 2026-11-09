@@ -31,7 +31,7 @@ LDFLAGS := \
 	-Wl,--gc-sections \
 	-Wl,-Map=$(TARGET).map
 
-OBJS := startup.o uart-test.o
+OBJS := startup.o uart.o uart-test.o
 
 
 all: $(TARGET).elf $(TARGET).bin
@@ -39,7 +39,10 @@ all: $(TARGET).elf $(TARGET).bin
 startup.o: startup.S
 	$(CC) $(ASFLAGS) -c $< -o $@
 
-uart-test.o: uart-test.c
+uart.o: uart.c uart.h lbc2378.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+uart-test.o: uart-test.c uart.h lbc2378.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(TARGET).elf: $(OBJS) linker.ld
@@ -52,7 +55,10 @@ $(TARGET).bin: $(TARGET).elf
 dump: $(TARGET).elf
 	$(OBJDUMP) -d -S $<
 
+flash: $(TARGET).elf
+	openocd -f interface/cmsis-dap.cfg -f mcb2300.cfg -c 'init' -c 'reset halt' -c 'program $(TARGET).elf' -c 'reset run' -c 'shutdown'
+
 clean:
 	rm -f *.o *.elf *.bin *.map
 
-.PHONY: all clean dump
+.PHONY: all clean dump flash
